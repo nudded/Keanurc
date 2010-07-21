@@ -1,0 +1,3 @@
+require 'servermanager'
+
+ServerManager.run
