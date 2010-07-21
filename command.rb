@@ -38,11 +38,21 @@ module Command
   
   def parse(parse_string)
     arr = parse_string.split 
+    index = arr.index ':'
+    arr.delete_at index if index
     # it will parse the irc string based on the given
     # parse_string. This will set the instance variables according to
     # the names specified in the parse_string
     self.send(:define_method, :parse_irc_input) do |string|
-      arr.zip(string.split).reject {|k,v| k.nil? || v.nil?}.each do |k, v|
+      irc_arr = string.split
+      if index
+        end_message = irc_arr.slice!(index, irc_arr.length - index).join ' '
+        # strip the leading ':'
+        end_message[0] = ''
+        irc_arr << end_message
+      end
+      arr.zip(irc_arr).each do |k, v|
+        next if v.nil?
         name = k.match(/\[?:(\w*)/)[1]
         v = v.split ',' if k[0] == '['
         send(name + '=', v)
@@ -62,7 +72,7 @@ module Command
       # set the current name and class so we can use it
       # when the block is eval'ed
       @klass, @name = klass, name
-      instance_eval &b
+      instance_eval &b if block_given?
     end
   
     def default(default_value)

@@ -1,8 +1,9 @@
 require 'command'
 Command.create 'join' do
 
-  parse "[:channels] [:keys]"
+  parse "[:channels] [:keys] : :message"
 
+  # Fine grained control
   param :channels do
     default []
     join do |channels|
@@ -10,19 +11,14 @@ Command.create 'join' do
     end
   end
   
-  # Fine grained control
-  param :keys do
-    default []
-    join do |keys|
-      keys.join ','
-    end
-  end
-
   # Handy defaults
-  comma_separated_array :channels, :keys
+  comma_separated_array :keys
+
+  param :message
 
 end
 c = Command::JOIN.new
-c.parse_irc_input '#zeus,#wina test'
+c.parse_irc_input '#zeus,#wina test :testing test'
 p c.channels
 p c.keys
+p c.message
