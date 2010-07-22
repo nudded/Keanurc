@@ -20,8 +20,10 @@ module Command
     end
   end
   
-  def param(name, &b)
-    Param.new self, name, &b
+  def param(*names, &b)
+    names.each do |name|
+      Param.new self, name, &b
+    end
   end
   
   # nice and handy convenience method
@@ -46,9 +48,17 @@ module Command
     self.send(:define_method, :parse_irc_input) do |string|
       irc_arr = string.split
       if index
+        # we must not forgot to prefix the last message with a ':'
+        # strip leading ':'
+        key = arr[index].dup.tap {|s| s[0]=''}.to_sym
+        self.class.params[key] = lambda {|v| ':' + v}
+
+        # join all the components of the ending parameter together
         end_message = irc_arr.slice!(index, irc_arr.length - index).join ' '
         # strip the leading ':'
         end_message[0] = ''
+
+        # now put it in as one string
         irc_arr << end_message
       end
       arr.zip(irc_arr).each do |k, v|

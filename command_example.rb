@@ -22,3 +22,4 @@ c.parse_irc_input '#zeus,#wina test :testing test'
 p c.channels
 p c.keys
 p c.message
+p c.to_irc
