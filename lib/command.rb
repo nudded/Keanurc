@@ -10,7 +10,7 @@ module Command
     # this adds all of the below defined methods to this class
     new_class.extend(Command)
 
-    new_class.instance_eval(&b)
+    new_class.instance_eval(&b) if block_given?
 
     # now we can define the to_irc method
     new_class.send(:define_method, :to_irc) do
