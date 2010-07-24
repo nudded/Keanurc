@@ -5,8 +5,10 @@ class TestCommand < Test::Unit::TestCase
   
   def test_create
     Command.create 'test' 
-    assert_kind_of Class, Command::TEST
-    assert_equal CommandBase, Command::TEST.superclass
+    assert_nothing_thrown do
+      assert_kind_of Class, Command::TEST
+      assert_equal CommandBase, Command::TEST.superclass
+    end
   end
 
   def test_param
