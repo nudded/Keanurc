@@ -57,7 +57,7 @@ class TestCommand < Test::Unit::TestCase
     assert_equal [], test_object.array
 
     test_object.array = [1,2,3,4]
-    assert_equal "1,2,3,4", test_object.to_irc
+    assert_equal "TESTARRAY 1,2,3,4", test_object.to_irc
   end
 
   def test_parse
@@ -75,7 +75,7 @@ class TestCommand < Test::Unit::TestCase
     assert_equal 'hello', test_object.param1
     assert_equal ['4','2','1','3'], test_object.param2
     assert_equal 'testing last param', test_object.param3
-    assert_equal 'hello 4,2,1,3 :testing last param', test_object.to_irc 
+    assert_equal 'TESTPARSE hello 4,2,1,3 :testing last param', test_object.to_irc 
   end
 
 end
