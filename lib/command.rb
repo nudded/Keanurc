@@ -1,4 +1,4 @@
-require 'command_base'
+require_relative 'command_base'
 
 module Command
 
@@ -14,9 +14,11 @@ module Command
 
     # now we can define the to_irc method
     new_class.send(:define_method, :to_irc) do
-      self.class.params.inject [] do |array, pair| 
+      param = self.class.params.inject [] do |array, pair| 
         array << pair[1].call(self.send(pair[0]))
       end.join ' ' 
+      # closures are awesome
+      name.upcase + ' ' + param
     end
   end
   
