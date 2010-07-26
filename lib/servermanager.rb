@@ -1,26 +1,23 @@
 require 'socket'
-require 'singleton'
 require 'yaml'
+
+require_relative 'commands'
 
 class ServerManager
 
-  include Singleton
-
-  def initialize
-    @config = YAML.load_file('server_config.yml') 
+  def initialize(config_file)
+    @config = YAML.load_file config_file 
     @config.each do |k,v|
       connect k,v['port']
     end
   end
 
-  def self.run
-    instance.run
+  def self.run(config_file)
+    new(config_file).run
   end
 
   # Run forever, and route incoming messages to the correct plugins
   def run
-    sockets['wina.ugent.be'].puts "NICK nuddedtestbot"
-    sockets['wina.ugent.be'].puts "USER nuddedtestbot * * :nuddedtestbot"
     loop do
       incoming_sockets = IO.select(sockets.values, nil, nil)
       if incoming_sockets
@@ -56,11 +53,19 @@ class ServerManager
     command = m[2]
     params = m[3]
 
-    puts "#{prefix}#{command}#{params}"
+    klass = Command.const_get command.upcase
+    command = klass.new
+    command.parse_irc_input params
+    
+    puts command.to_irc
   end
 
   def sockets
     @sockets ||= {}
   end
 
+end
+
+if __FILE__ == $0
+  ServerManager.run 'test/server_config.yml'
 end
