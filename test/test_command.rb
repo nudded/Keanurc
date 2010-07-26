@@ -46,4 +46,36 @@ class TestCommand < Test::Unit::TestCase
     assert_equal 'test3', test_object.test3
   end
 
+  def test_comma_separated_array
+    Command.create 'testarray' do
+
+      comma_separated_array :array
+
+    end
+
+    test_object = Command::TESTARRAY.new
+    assert_equal [], test_object.array
+
+    test_object.array = [1,2,3,4]
+    assert_equal "1,2,3,4", test_object.to_irc
+  end
+
+  def test_parse
+    Command.create 'testparse' do
+      parse ":param1 [:param2] : :param3"    
+      
+      # we must specify param2 here or else our order is wrong
+      param :param1, :param2, :param3
+      comma_separated_array :param2
+    end
+
+    test_object = Command::TESTPARSE.new
+
+    test_object.parse_irc_input 'hello 4,2,1,3 :testing last param'
+    assert_equal 'hello', test_object.param1
+    assert_equal ['4','2','1','3'], test_object.param2
+    assert_equal 'testing last param', test_object.param3
+    assert_equal 'hello 4,2,1,3 :testing last param', test_object.to_irc 
+  end
+
 end
