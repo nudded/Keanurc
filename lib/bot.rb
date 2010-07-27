@@ -2,6 +2,7 @@ require 'socket'
 require 'yaml'
 
 require_relative 'commands'
+require_relative 'ping_plugin'
 
 class Bot
 
@@ -59,14 +60,23 @@ class Bot
     m = parse_regex.match string
 
     prefix = m[1]
-    command = m[2]
+    command_name = m[2]
     params = m[3]
 
-    klass = Command.const_get command.upcase
+    klass = Command.const_get command_name.upcase
     command = klass.new
     command.parse_irc_input params
-    
+
+    plugin_commands = []
+    Plugin.each do |plugin|
+      result = plugin.on(command_name, command)
+      plugin_commands << result if result
+    end
+
+    plugin_commands.each {|c| socket.puts c.to_irc }
     puts command.to_irc
+  rescue
+    puts string
   end
 
   def sockets
