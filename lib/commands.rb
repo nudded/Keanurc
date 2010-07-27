@@ -24,12 +24,12 @@ Command.create 'error' do
 end
 
 Command.create 'ping' do
-  parse ':message'
+  parse ': :message'
   param :message
 end
 
 Command.create 'pong' do
-  parse ':message'
+  parse ': :message'
   param :message
 end
 
@@ -53,6 +53,11 @@ Command.create 'quit' do
   param :message do
     default "byebye bitjes"
   end
+end
+
+Command.create 'kick' do
+  parse ':channel :user : :message'
+  param :channel, :user, :message 
 end
 
 # END OF MOTD COMMAND

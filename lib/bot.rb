@@ -4,16 +4,21 @@ require 'yaml'
 require_relative 'commands'
 require_relative 'ping_plugin'
 require_relative 'join_plugin'
+require_relative 'reconnect_plugin'
 
 class Bot
 
   def initialize(config_file)
     @config = YAML.load_file config_file 
+    @nick = @config.delete 'nick'
+
     @config.each do |k,v|
       connect k,v['port']
       v['channels'].map! {|c| '#' + c }
       Plugin.plugins << JoinPlugin.new(v['channels'])
     end
+
+    Plugin.plugins.each {|p| p.bot_nick = @nick}
   end
 
   def self.run(config_file)
@@ -37,14 +42,14 @@ class Bot
   private
   
   def join
+    nick = Command::NICK.new
+    nick.nickname = @nick
+
+    user = Command::USER.new
+    user.username = @nick.upcase
+    user.realname = @nick
+
     @config.each do |k,v|
-      nick = Command::NICK.new
-      nick.nickname = v['nick']
-
-      user = Command::USER.new
-      user.username = v['nick'].upcase
-      user.realname = v['nick']
-
       sockets[k].puts nick.to_irc
       sockets[k].puts user.to_irc
     end
@@ -66,6 +71,7 @@ class Bot
     command_name = m[2]
     params = m[3]
 
+    # if the command is all digits, we need to prepend 'irc'
     if command_name =~ /^\d{3}$/
       command_name = "irc" + command_name
     end
@@ -73,6 +79,10 @@ class Bot
     klass = Command.const_get command_name.upcase
     command = klass.new
     command.parse_irc_input params
+    
+    # set the sender
+    match = prefix.match(/^:(\w+)!.*$/) if prefix
+    command.sender = match[1] if match 
 
     plugin_commands = []
     Plugin.each do |plugin|
@@ -82,7 +92,8 @@ class Bot
 
     plugin_commands.flatten.each {|c| socket.puts c.to_irc }
     puts command.to_irc
-  rescue
+  rescue Exception => e
+    puts e
     puts string
   end
 
