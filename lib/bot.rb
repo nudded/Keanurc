@@ -73,7 +73,7 @@ class Bot
       plugin_commands << result if result
     end
 
-    plugin_commands.each {|c| socket.puts c.to_irc }
+    plugin_commands.flatten.each {|c| socket.puts c.to_irc }
     puts command.to_irc
   rescue
     puts string
