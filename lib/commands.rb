@@ -54,3 +54,9 @@ Command.create 'quit' do
     default "byebye bitjes"
   end
 end
+
+# END OF MOTD COMMAND
+Command.create '376' do
+  parse ':nickname : :message'
+  param :nickname, :message
+end
