@@ -3,7 +3,7 @@ require 'yaml'
 
 require_relative 'commands'
 
-class ServerManager
+class Bot
 
   def initialize(config_file)
     @config = YAML.load_file config_file 
@@ -42,7 +42,6 @@ class ServerManager
     sockets[host] = socket
   end
 
-  # TODO implement this bitch
   def parse(string)
     return unless string
 
@@ -67,5 +66,5 @@ class ServerManager
 end
 
 if __FILE__ == $0
-  ServerManager.run 'test/server_config.yml'
+  Bot.run 'test/server_config.yml'
 end
