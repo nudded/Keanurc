@@ -56,7 +56,7 @@ Command.create 'quit' do
 end
 
 # END OF MOTD COMMAND
-Command.create '376' do
+Command.create 'irc376' do
   parse ':nickname : :message'
   param :nickname, :message
 end
