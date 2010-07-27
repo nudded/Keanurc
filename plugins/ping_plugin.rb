@@ -1,5 +1,3 @@
-require_relative 'plugin'
-
 class PingPlugin < Plugin
   
   def on_ping(command)

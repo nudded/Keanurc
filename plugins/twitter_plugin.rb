@@ -1,4 +1,3 @@
-require_relative 'plugin'
 require 'twitter'
 
 class TwitterPlugin < Plugin

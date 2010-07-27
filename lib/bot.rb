@@ -5,7 +5,6 @@ require_relative 'commands'
 require_relative 'ping_plugin'
 require_relative 'join_plugin'
 require_relative 'reconnect_plugin'
-require_relative 'twitter_plugin'
 
 class Bot
 
@@ -18,6 +17,7 @@ class Bot
       v['channels'].map! {|c| '#' + c }
       Plugin.plugins << JoinPlugin.new(v['channels'])
     end
+    Plugin.load_plugins
 
     Plugin.plugins.each {|p| p.bot_nick = @nick}
   end
