@@ -1,5 +1,5 @@
 wina.ugent.be:
   port: 6667
   channels: [zeus, wina]
-  nick: TestBot
+  nick: NuddedTestBot
 
