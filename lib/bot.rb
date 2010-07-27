@@ -18,6 +18,7 @@ class Bot
 
   # Run forever, and route incoming messages to the correct plugins
   def run
+    join
     loop do
       incoming_sockets = IO.select(sockets.values, nil, nil)
       if incoming_sockets
@@ -31,6 +32,20 @@ class Bot
 
   private
   
+  def join
+    @config.each do |k,v|
+      nick = Command::NICK.new
+      nick.nickname = v['nick']
+
+      user = Command::USER.new
+      user.username = v['nick'].upcase
+      user.realname = v['nick']
+
+      sockets[k].puts nick.to_irc
+      sockets[k].puts user.to_irc
+    end
+  end
+
   # Open a connection to the specified `host` and `port`
   def connect(host, port = 6667)
     socket = TCPSocket.new host, port
