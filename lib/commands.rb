@@ -32,3 +32,18 @@ Command.create 'pong' do
   parse ':message'
   param :message
 end
+
+Command.create 'privmsg' do
+  parse ':receiver : :message'
+  param :receiver, :message
+end
+
+Command.create 'join' do
+  parse '[:channels] [:keys]'
+  comma_separated_array :channels, :keys
+end
+
+Command.create 'part' do
+  parse '[:channels]'
+  comma_separated_array :channels
+end
