@@ -98,7 +98,7 @@ class Bot
       puts command.to_irc
     end
   rescue Exception => e
-    puts e.backtrace
+    puts e
     puts string
   end
 
