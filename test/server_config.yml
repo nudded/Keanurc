@@ -1,5 +1,5 @@
-nick: NuddedTestBot
+nick: Rofldawg
 
 wina.ugent.be:
   port: 6667
-  channels: [zeus]
+  channels: [rofldog]

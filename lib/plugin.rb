@@ -6,16 +6,28 @@ class Plugin
     plugins << new_plugin.new
   end
 
+  def self.reload
+    # i hate the joinplugin, it's really ugly, but i really have to remove it
+    # here
+    @plugins.delete_if {|plu| plu.class == JoinPlugin} 
+    @plugins.each do |plu|
+      Object.class_eval {remove_const plu.class.name.to_sym}
+    end
+    @plugins = []
+    load_plugins @plugin_dir
+  end
+
   def self.plugins
     @plugins ||= []
   end
 
   def self.each(&b)
-    plugins.each &b
+    plugins.dup.each &b
   end
 
   def self.load_plugins(dir_name = 'plugins')
-    Dir["#{dir_name}/*.rb"].each {|plugin| require plugin}
+    @plugin_dir = dir_name
+    Dir["#{dir_name}/*.rb"].each {|plugin| load plugin}
   end
 
   def on(name, command)
