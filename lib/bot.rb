@@ -107,7 +107,3 @@ class Bot
   end
 
 end
-
-if __FILE__ == $0
-  Bot.run 'test/server_config.yml'
-end
