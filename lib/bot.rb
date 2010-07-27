@@ -3,6 +3,7 @@ require 'yaml'
 
 require_relative 'commands'
 require_relative 'ping_plugin'
+require_relative 'join_plugin'
 
 class Bot
 
@@ -10,6 +11,8 @@ class Bot
     @config = YAML.load_file config_file 
     @config.each do |k,v|
       connect k,v['port']
+      v['channels'].map! {|c| '#' + c }
+      Plugin.plugins << JoinPlugin.new(v['channels'])
     end
   end
 
@@ -62,6 +65,10 @@ class Bot
     prefix = m[1]
     command_name = m[2]
     params = m[3]
+
+    if command_name =~ /^\d{3}$/
+      command_name = "irc" + command_name
+    end
 
     klass = Command.const_get command_name.upcase
     command = klass.new

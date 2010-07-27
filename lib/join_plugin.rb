@@ -6,7 +6,7 @@ class JoinPlugin < Plugin
     @channels, @keys = channels, keys
   end
 
-  def on_376(command)
+  def on_irc376(command)
     command = Command::JOIN.new
     command.channels = @channels 
     command.keys = @keys
