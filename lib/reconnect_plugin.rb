@@ -12,4 +12,13 @@ class ReconnectPlugin < Plugin
     end
   end
 
+  def on_privmsg(command)
+    if command.message == 'Wie is er de max?'
+      c = Command::PRIVMSG.new
+      c.receiver = command.receiver
+      c.message = command.sender + ': ' + 'you are, sir'
+      c
+    end
+  end
+
 end

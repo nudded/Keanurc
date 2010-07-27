@@ -5,6 +5,7 @@ require_relative 'commands'
 require_relative 'ping_plugin'
 require_relative 'join_plugin'
 require_relative 'reconnect_plugin'
+require_relative 'twitter_plugin'
 
 class Bot
 
