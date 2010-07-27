@@ -1,5 +1,5 @@
 require_relative 'command'
-# the NICK command
+
 Command.create 'nick' do
   parse ":nickname"
   param :nickname
@@ -20,5 +20,15 @@ end
 
 Command.create 'error' do
   parse ': :message'
+  param :message
+end
+
+Command.create 'ping' do
+  parse ':message'
+  param :message
+end
+
+Command.create 'pong' do
+  parse ':message'
   param :message
 end
