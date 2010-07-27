@@ -47,3 +47,10 @@ Command.create 'part' do
   parse '[:channels]'
   comma_separated_array :channels
 end
+
+Command.create 'quit' do
+  parse ': :message'
+  param :message do
+    default "byebye bitjes"
+  end
+end
