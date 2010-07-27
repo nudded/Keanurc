@@ -91,7 +91,10 @@ class Bot
         plugin_commands << result if result
       end
 
-      plugin_commands.flatten.each {|c| socket.puts c.to_irc }
+      plugin_commands.flatten.each do |c|
+        socket.puts c.to_irc 
+        sleep 0.2
+      end
       puts command.to_irc
     end
   rescue Exception => e
