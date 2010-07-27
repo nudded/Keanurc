@@ -5,8 +5,6 @@ class ReconnectPlugin < Plugin
       c = Command::JOIN.new
       c.channels << command.channel
       c
-    else
-      nil
     end
   end
 
