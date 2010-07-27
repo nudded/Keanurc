@@ -22,16 +22,11 @@ class Bot
       incoming_sockets = IO.select(sockets.values, nil, nil)
       if incoming_sockets
         incoming_sockets.first.each do |sock|
-          parse sock.gets
+          parse sock.gets, sock
         end
       end
       sleep 0.2
     end
-  end
-
-  # Send the message. (the host will be set in the Message object)
-  def send(message)
-    sockets[message.host].send message.to_irc
   end
 
   private
@@ -42,7 +37,7 @@ class Bot
     sockets[host] = socket
   end
 
-  def parse(string)
+  def parse(string, socket)
     return unless string
 
     parse_regex = /^(:\S* )?(\d{3}|\w*)(.*)/
