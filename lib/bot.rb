@@ -82,15 +82,18 @@ class Bot
     # set the sender
     match = prefix.match(/^:(\w+)!.*$/) if prefix
     command.sender = match[1] if match 
+    
+    # make sure we don't respond to our own commands
+    if command.sender != @nick
+      plugin_commands = []
+      Plugin.each do |plugin|
+        result = plugin.on(command_name, command)
+        plugin_commands << result if result
+      end
 
-    plugin_commands = []
-    Plugin.each do |plugin|
-      result = plugin.on(command_name, command)
-      plugin_commands << result if result
+      plugin_commands.flatten.each {|c| socket.puts c.to_irc }
+      puts command.to_irc
     end
-
-    plugin_commands.flatten.each {|c| socket.puts c.to_irc }
-    puts command.to_irc
   rescue Exception => e
     puts e
     puts string
