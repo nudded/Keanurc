@@ -15,6 +15,7 @@ class Bot
       v['channels'].map! {|c| '#' + c }
       Plugin.plugins << JoinPlugin.new(v['channels'])
     end
+    Plugin.plugin_dir = 'plugins'
     Plugin.load_plugins
 
     Plugin.plugins.each {|p| p.bot_nick = @nick}
