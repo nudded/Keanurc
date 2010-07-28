@@ -62,7 +62,7 @@ class Plugin
       query = m[1].strip rescue nil 
 
       call_args = [query, resp, command.sender]
-      response = block.call *call_args[0..block.arity] if m
+      response = block.call *call_args[0...block.arity] if m
       responses << response
     end
     responses.compact
