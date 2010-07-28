@@ -10,14 +10,10 @@ module Imdb
 end
 class IMDBPlugin < Plugin
   
-  def on_privmsg(command)
-    if command.message =~ /!imdb (.*)/
-      query = Imdb::Search.new $1
-      c = Command::PRIVMSG.new
-      c.receiver = command.receiver
-      c.message = query.movies.first.url rescue c.message = "no results"
-      c
-    end
+  on_command '!imdb' do |query, response|
+    message = Imdb::Search.new(query).movies.first.url rescue "No results"
+    response.message = message
+    response
   end
 
 end
