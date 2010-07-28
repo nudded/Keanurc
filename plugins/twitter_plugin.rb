@@ -2,21 +2,17 @@ require 'twitter'
 
 class TwitterPlugin < Plugin
 
-  def on_privmsg(command)
-    if command.message =~ /^!twitter (\w*)$/
-      c = Command::PRIVMSG.new
-      c.receiver = command.receiver
-      link = c.dup
-      begin
-        tweet = Twitter.user($1).status
-        message = '@' + $1 + ': ' + tweet.text  
-        c.message = message
-        link.message = "http://twitter.com/#{$1}"
-        [c, link]
-      rescue 
-        c.message = "hmm, bestaat niet"
-        c
-      end
+  on_command '!twitter' do |query, response|
+    begin
+      tweet = Twitter.user(query).status
+      message = '@' + query + ': ' + tweet.text  
+      link = response.dup
+      link.message = "http://twitter.com/#{query}"
+      response.message = message
+      [response, link]
+    rescue
+      response.message = "hmm, bestaat niet sorry"
+      response
     end
   end
 

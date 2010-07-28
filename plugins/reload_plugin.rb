@@ -1,13 +1,10 @@
 class ReloadPlugin < Plugin
-  
-  def on_privmsg(command)
-    if command.message =~ /^!reload$/
+ 
+  on_command '!reload' do |query, response|
+    if query.empty?
       Plugin.reload
-      puts "reloaded"
-      c = Command::PRIVMSG.new
-      c.receiver = command.receiver
-      c.message = "testin"
-      c
+      response.message = "reloaded all my plugins"
+      response
     end
   end
 
