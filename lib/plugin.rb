@@ -63,7 +63,7 @@ class Plugin
 
       call_args = [query, resp, command.sender]
       response = block.call *call_args[0..block.arity] if m
-      responses << response                        
+      responses << response
     end
     responses.compact
   end

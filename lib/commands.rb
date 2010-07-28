@@ -57,7 +57,8 @@ end
 
 Command.create 'kick' do
   parse ':channel :user : :message'
-  param :channel, :user, :message 
+  param :channel, :user
+  param :message {default "byebye troll"}
 end
 
 # END OF MOTD COMMAND
