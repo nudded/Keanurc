@@ -53,7 +53,7 @@ module Command
         # we must not forgot to prefix the last message with a ':'
         # strip leading ':'
         key = arr[index].dup.tap {|s| s[0]=''}.to_sym
-        self.class.params[key] = lambda {|v| ':' + v ? v : ''}
+        self.class.params[key] = lambda {|v| ':' + (v ? v : '')}
 
         # join all the components of the ending parameter together
         end_message = irc_arr.slice!(index, irc_arr.length - index).join ' '
