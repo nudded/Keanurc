@@ -11,10 +11,8 @@ class UrbanPlugin < Plugin
       doc = Nokogiri::HTML.parse html
       definition = doc.xpath("//div[@class='definition']").first.text
       response.message = query + ': ' + definition
-      response
     rescue
       response.message = "No results"
-      response
     end
   end
 

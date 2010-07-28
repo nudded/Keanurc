@@ -12,7 +12,6 @@ class TwitterPlugin < Plugin
       [response, link]
     rescue
       response.message = "hmm, bestaat niet sorry"
-      response
     end
   end
 

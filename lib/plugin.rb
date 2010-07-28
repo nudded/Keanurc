@@ -63,9 +63,18 @@ class Plugin
 
       call_args = [query, resp, command.sender]
       response = block.call *call_args[0...block.arity] if m
-      responses << response
+      if valid_command? response 
+        responses << response
+        responses.flatten!
+      elsif block.arity > 1
+        responses << resp if resp.message
+      end
     end
     responses.compact
+  end
+
+  def valid_command?(potential)
+    (potential.is_a?(Array) && potential.all? {|r| r.is_a?(CommandBase)}) || potential.is_a?(CommandBase)
   end
 
   def method_missing(name, *args)

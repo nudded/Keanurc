@@ -4,7 +4,6 @@ class ReconnectPlugin < Plugin
     if command.user == bot_nick
       c = Command::JOIN.new
       c.channels << command.channel
-      c
     end
   end
 

@@ -13,7 +13,6 @@ class IMDBPlugin < Plugin
   on_command '!imdb' do |query, response|
     message = Imdb::Search.new(query).movies.first.url rescue "No results"
     response.message = message
-    response
   end
 
 end

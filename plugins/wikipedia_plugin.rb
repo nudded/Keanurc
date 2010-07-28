@@ -6,13 +6,10 @@ class WikiPediaPlugin < Plugin
 
   on_command '!wik' do |query, response|
     self.search(query, response)
-    response
   end
-
 
   on_command '!wuk' do |query, response|
     self.search(query, response)
-    response
   end
 
   def self.search(query, response)
@@ -24,10 +21,11 @@ class WikiPediaPlugin < Plugin
       doc = Nokogiri::HTML.parse(open(url))
       el = doc.xpath("//div[@id='bodyContent']/p").first
       begin
-        short_content = el.text.split(/\n|\. [A-Z]/).first + '.'
+        short_content = el.text.split(/\n|\. [A-Z]/).first
         if short_content =~ / may refer to:$/
           short_content = doc.xpath("//div[@id='bodyContent']/ul").first.text.split("\n").first
         end
+        short_content << '.'
       rescue
         short_content = "Start the #{$2} article, using the Article Wizard if you wish, or add a request for it."
       end

@@ -6,7 +6,6 @@ class GooglePlugin < Plugin
     search = Google::Search::Web.new :query => query
     message = search.first.uri + " || " + "http://www.google.be/search?&q=#{Google::Search.url_encode(search.query)}"
     response.message = message
-    response
   end
 
 end
