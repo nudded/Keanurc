@@ -30,7 +30,7 @@ class ChallengePlugin < Plugin
         kick = Command::KICK.new
         kick.channel = res.receiver
         loser = self.class.challengers.reject {|c| c == command.sender}
-        kick.user = loser unless loser = 'Rofldawg'
+        kick.user = loser unless loser == 'Rofldawg'
         return [res, kick]
       end
     else
