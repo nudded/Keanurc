@@ -23,12 +23,15 @@ class ChallengePlugin < Plugin
 
   def on_privmsg(command)
     if self.class.challenged && self.class.challengers.any? {|c| c == command.sender}
-      puts "TEST"
       if command.message == self.class.questions[self.class.q] 
         self.class.challenged = false
         res = respond(command)
         res.message = command.sender + " wins the day" 
-        return res
+        kick = Command::KICK.new
+        kick.channel = res.receiver
+        loser = self.class.challengers.reject {|c| c == command.sender}
+        kick.user = loser unless loser = 'Rofldawg'
+        return [res, kick]
       end
     else
       super
