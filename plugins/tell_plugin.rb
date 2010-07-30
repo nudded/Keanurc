@@ -3,7 +3,7 @@ class TellPlugin < Plugin
   on_command '!tell' do |query, response|
     query = query.split
     to = query.delete_at 0
-    tells[to] << query.join(' ')
+    tells[to] << to + ': ' + Time.now.strftime("%H:%M") + "<#{sender}>" + query.join(' ')
     response.message = "I'll pass that on when #{to} is around."
   end
 
@@ -21,7 +21,8 @@ class TellPlugin < Plugin
   end
 
   def self.tells
-    @tells ||= Hash.new {|h,k| h[k] = [] }
+    store['tells'] = Hash.new {|h,k| h[k] = [] } unless store['tells']
+    store['tells']
   end
 
 end

@@ -1,3 +1,5 @@
+require 'redis'
+
 class Plugin
  
   attr_accessor :bot_nick
@@ -75,6 +77,10 @@ class Plugin
 
   def valid_command?(potential)
     (potential.is_a?(Array) && potential.all? {|r| r.is_a?(CommandBase)}) || potential.is_a?(CommandBase)
+  end
+
+  def self.store
+    @store ||= Redis.new 
   end
 
   def method_missing(name, *args)
