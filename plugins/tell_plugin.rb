@@ -3,7 +3,7 @@ class TellPlugin < Plugin
   on_command '!tell' do |query, response, sender|
     query = query.split
     to = query.delete_at 0
-    self.add_tell(to, to + ': ' + Time.now.strftime("%H:%M") + " <#{sender}> " + query.join(' '))
+    self.add_tell(to, to + ': ' + Time.now.strftime("%F@%H:%M") + " <#{sender}> " + query.join(' '))
     response.message = "I'll pass that on when #{to} is around."
   end
 
