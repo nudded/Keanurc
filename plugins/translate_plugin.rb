@@ -10,7 +10,7 @@ class TranslatePlugin < Plugin
     uri = URI.parse 'http://ajax.googleapis.com/'
     request_path = "/ajax/services/language/translate?v=1.0&q=#{query}&langpair=%7Cnl"
     resp = JSON[Net::HTTP.get(uri.host, request_path)]
-    command.message = resp['responseData']['translatedText']
+    command.message = CGI.unescape(resp['responseData']['translatedText'])
   end
 
 end
