@@ -21,7 +21,7 @@ class RR2Plugin < Plugin
 
     array = [command]
 
-    times.time do |i|
+    times.times do |i|
       new_message = dup.dup
       new_message.message = "*RR* #{users[i % 2]} takes the gun: *CLICK*"
       array << new_message
