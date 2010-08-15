@@ -1,6 +1,6 @@
 class RR2Plugin < Plugin
   
-  on_command 'rr2' do |query, command, sender|
+  on_command '!rr2' do |query, command, sender|
     player = query.split.first
 
     kick = Command::KICK.new
