@@ -63,8 +63,19 @@ Command.create 'kick' do
   end
 end
 
+# sleep command, will not be send to the server. only used to make the bot
+# sleep for a while
+Command.create 'sleep' do
+  parse ':time'
+  param :time do 
+    default 0.5
+  end
+end
+
 # END OF MOTD COMMAND
 Command.create 'irc376' do
   parse ':nickname : :message'
   param :nickname, :message
 end
+
+

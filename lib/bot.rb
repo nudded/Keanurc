@@ -93,8 +93,12 @@ class Bot
       end
 
       plugin_commands.flatten.each do |c|
-        socket.puts c.to_irc 
-        sleep 0.2
+        if c.is_a?(Command::SLEEP)
+          sleep c.time
+        else
+          socket.puts c.to_irc 
+          sleep 0.2
+        end
       end
       puts command.to_irc
     end

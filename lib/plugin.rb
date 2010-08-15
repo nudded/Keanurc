@@ -32,6 +32,16 @@ class Plugin
     Dir["#{plugin_dir}/*.rb"].each {|plugin| load plugin}
   end
 
+  def self.sleep(time)
+    c = Command::SLEEP.new
+    c.time = time
+    c
+  end
+ 
+  def sleep(time)
+    self.class.sleep time
+  end
+
   def on(name, command)
     send("on_#{name.downcase}", command)
   end 
