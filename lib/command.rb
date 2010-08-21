@@ -88,7 +88,7 @@ module Command
     end
   
     def default(default_value)
-      name = "@" << @name
+      name = "@" << @name.to_s
       @klass.send(:define_method, @name) do 
         value = instance_variable_get(name) 
         instance_variable_set(name, default_value) unless value  
