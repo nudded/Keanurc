@@ -69,7 +69,7 @@ class Plugin
   def on_privmsg(command)
     responses = []
     self.class.commands.each do |com,block|
-      m = command.message.match(/^#{com}(.*)$/)
+      m = command.message.match(/^#{com} (.*)$/)
       resp = respond(command) 
       query = m[1].strip rescue nil 
 
