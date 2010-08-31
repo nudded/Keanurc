@@ -13,7 +13,7 @@ class SeenPlugin < Plugin
   #
   def on_privmsg(command)
     super_result = super
-    self.class.see command.sender, command.message
+    self.class.see command.sender, command.receiver, command.message
     super_result
   end
 
@@ -22,9 +22,10 @@ class SeenPlugin < Plugin
   #
   def self.last_seen(user)
     message = self.store.get "seen_message_#{user}"
+    channel = self.store.get "seen_channel_#{user}"
     time = self.store.get "seen_time_#{user}"
-    if message and time then
-      "#{user} was last seen on #{time} saying: #{message}"
+    if message and time and channel then
+      "#{user} was last seen in #{channel} on #{time} saying: #{message}"
     else
       "I've never seen #{user} here!"
     end
@@ -33,8 +34,9 @@ class SeenPlugin < Plugin
   # See the user: this will update the timestamp and the last message of the
   # user.
   #
-  def self.see(user, message)
+  def self.see(user, channel, message)
     self.store.set "seen_message_#{user}", message
+    self.store.set "seen_channel_#{user}", channel
     self.store.set "seen_time_#{user}", self.make_timestamp
   end
 
