@@ -93,6 +93,12 @@ class Plugin
     @store ||= Redis.new 
   end
 
+  # Create a timestamp in a simple, default format
+  #
+  def self.make_timestamp
+    Time.now.strftime("%F@%H:%M")
+  end
+
   def method_missing(name, *args)
     super unless name =~ /^on_(\w*)$/
   end

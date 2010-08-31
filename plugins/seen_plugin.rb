@@ -35,6 +35,7 @@ class SeenPlugin < Plugin
   #
   def self.see(user, message)
     self.store.set "seen_message_#{user}", message
-    self.store.set "seen_time_#{user}", Time.now.strftime("%F@%H:%M")
+    self.store.set "seen_time_#{user}", self.make_timestamp
   end
+
 end
